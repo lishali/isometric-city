@@ -44,10 +44,10 @@ const BUILDING_IMAGES: Partial<Record<BuildingType, { src: string; tileWidth: nu
   house_medium: { src: '/assets/buildings/house_medium.png', tileWidth: 1, tileHeight: 1, scale: 0.8, verticalOffset: 12 },
   apartment_low: { src: '/assets/buildings/residential.png', tileWidth: 1, tileHeight: 1, verticalOffset: 14 },
   apartment_high: { src: '/assets/buildings/residential.png', tileWidth: 1, tileHeight: 1, verticalOffset: 18 },
-  mansion: { src: '/assets/buildings/mansion.png', tileWidth: 1, tileHeight: 1, verticalOffset: 16 },
+  mansion: { src: '/assets/buildings/mansion.png', tileWidth: 1, tileHeight: 1, verticalOffset: -25 },
   // Commercial buildings (1x1)
   shop_small: { src: '/assets/buildings/shop_small.png', tileWidth: 1, tileHeight: 1, scale: 0.7 },
-  shop_medium: { src: '/assets/buildings/shop_medium.png', tileWidth: 1, tileHeight: 1 },
+  shop_medium: { src: '/assets/buildings/shop_medium.png', tileWidth: 1, tileHeight: 1, scale: 0.8 },
   office_low: { src: '/assets/buildings/commercial.png', tileWidth: 1, tileHeight: 1 },
   office_high: { src: '/assets/buildings/commercial.png', tileWidth: 1, tileHeight: 1 },
   mall: { src: '/assets/buildings/commercial.png', tileWidth: 1, tileHeight: 1 },

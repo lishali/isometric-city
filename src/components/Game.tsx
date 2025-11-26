@@ -2036,6 +2036,7 @@ function CanvasIsometricGrid({ overlayMode, selectedTile, setSelectedTile }: {
       imageSrc = BUILDING_IMAGES.mansion;
     } else if (buildingType === 'shop_medium') {
       imageSrc = BUILDING_IMAGES.shop_medium;
+      sizeMultiplier = 1.44; // Scaled down 20% from 1.8
     } else if (buildingType === 'shop_small') {
       imageSrc = BUILDING_IMAGES.shop_small;
       sizeMultiplier = 1.26; // Scaled down 30% from 1.8
