@@ -67,6 +67,12 @@ export const SPRITE_ORDER = [
   'warehouse',
   'factory_small',
   'factory_medium',
+  'factory_large',
+  // Row 5 (indices 25-29)
+  '', // Empty slot
+  '', // Empty slot
+  '', // Empty slot
+  '', // Empty slot
   'museum',
 ] as const;
 

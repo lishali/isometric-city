@@ -1553,6 +1553,11 @@ function CanvasIsometricGrid({ overlayMode, selectedTile, setSelectedTile }: {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
+    // Early exit if no grid data
+    if (!currentGrid || currentGridSize <= 0 || carsRef.current.length === 0) {
+      return;
+    }
+    
     ctx.save();
     ctx.scale(dpr * currentZoom, dpr * currentZoom);
     ctx.translate(currentOffset.x / currentZoom, currentOffset.y / currentZoom);
@@ -1566,12 +1571,14 @@ function CanvasIsometricGrid({ overlayMode, selectedTile, setSelectedTile }: {
     
     // Helper function to check if a car is behind a building
     const isCarBehindBuilding = (carTileX: number, carTileY: number): boolean => {
+      // Only check tiles directly in front (higher depth means drawn later/on top)
       const carDepth = carTileX + carTileY;
       
-      // Check nearby tiles for buildings that would be drawn in front
-      // We check a 3x3 area around the car to catch buildings that might visually cover it
-      for (let dy = -1; dy <= 1; dy++) {
-        for (let dx = -1; dx <= 1; dx++) {
+      // Check a small area - just tiles that could visually cover the car
+      for (let dy = 0; dy <= 1; dy++) {
+        for (let dx = 0; dx <= 1; dx++) {
+          if (dx === 0 && dy === 0) continue; // Skip the car's own tile
+          
           const checkX = carTileX + dx;
           const checkY = carTileY + dy;
           
@@ -1580,24 +1587,23 @@ function CanvasIsometricGrid({ overlayMode, selectedTile, setSelectedTile }: {
             continue;
           }
           
-          const tile = currentGrid[checkY][checkX];
+          const tile = currentGrid[checkY]?.[checkX];
+          if (!tile) continue;
+          
           const buildingType = tile.building.type;
           
-          // Skip roads, grass, empty, water, and trees (these don't hide cars)
+          // Skip roads, grass, empty, water, trees, and zones (these don't hide cars)
           if (buildingType === 'road' || buildingType === 'grass' || buildingType === 'empty' || 
-              buildingType === 'water' || buildingType === 'tree') {
+              buildingType === 'water' || buildingType === 'tree' ||
+              buildingType === 'residential' || buildingType === 'commercial' || buildingType === 'industrial') {
             continue;
           }
           
-          // Check if this building tile has a higher or equal depth (drawn at same time or after)
+          // Check if this building tile has higher depth (drawn after/on top)
           const buildingDepth = checkX + checkY;
           
-          // In isometric rendering, objects with higher depth are drawn later (on top)
-          // Also check same depth but drawn later in the rendering order (to the right/bottom)
-          if (buildingDepth > carDepth || 
-              (buildingDepth === carDepth && (checkX > carTileX || (checkX === carTileX && checkY > carTileY)))) {
-            // All buildings with sprites (non-road, non-grass, etc.) have PNG sprites that extend upward
-            // and can visually cover cars, so we hide the car
+          // Only hide if building is strictly in front (higher depth)
+          if (buildingDepth > carDepth) {
             return true;
           }
         }
@@ -2477,7 +2483,7 @@ function CanvasIsometricGrid({ overlayMode, selectedTile, setSelectedTile }: {
         imageSrc = BUILDING_IMAGES[buildingType];
         if (buildingType === 'power_plant') sizeMultiplier = 2.25;
         else if (buildingType === 'stadium') sizeMultiplier = 1.372;
-        else if (buildingType === 'museum') sizeMultiplier = 1.372;
+        else if (buildingType === 'museum') sizeMultiplier = 0.6723; // 60% smaller than stadium (1.372 * 0.7 * 0.7)
         else if (buildingType === 'space_program') sizeMultiplier = 2.94;
         else if (buildingType === 'university') sizeMultiplier = 2.8;
         else if (buildingType === 'hospital') sizeMultiplier = 2.25;
