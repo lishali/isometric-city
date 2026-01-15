@@ -3,11 +3,11 @@ import { Tool } from '@/types/game';
 
 // Essential tools for beginners
 export const BEGINNER_TOOLS: Tool[] = [
-  'house_small',
+  'zone_residential',
   'road', 
   'power_plant',
   'water_tower',
-  'shop_small',
+  'zone_commercial',
   'park',
   'bulldoze',
 ];
@@ -15,9 +15,7 @@ export const BEGINNER_TOOLS: Tool[] = [
 // Tools to show after completing basic tutorial
 export const INTERMEDIATE_TOOLS: Tool[] = [
   ...BEGINNER_TOOLS,
-  'house_medium',
-  'shop_medium',
-  'factory_small',
+  'zone_industrial',
   'police_station',
   'fire_station',
   'hospital',

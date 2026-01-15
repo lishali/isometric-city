@@ -30,7 +30,7 @@ const TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: 'overview',
     title: 'Your City View',
-    description: 'This is your city grid. You can click and drag to move around, and scroll to zoom in/out.',
+    description: 'This is your city grid. You can click and drag to move around, and scroll to zoom in/out. Try it now!',
     icon: <Building className="h-6 w-6" />,
     position: 'center',
     action: 'Try dragging the map around, then click "Next"',
@@ -38,33 +38,34 @@ const TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: 'sidebar',
     title: 'Building Tools',
-    description: 'The sidebar contains all your building tools. Let\'s start with the basics - housing for your citizens.',
+    description: 'The sidebar on the left contains all your building tools. Let\'s start with housing for your citizens.',
     icon: <Building className="h-6 w-6" />,
-    target: '.sidebar', // Assuming sidebar has this class
-    position: 'right',
-    action: 'Look at the sidebar on the left',
+    position: 'center',
+    target: '[data-tutorial="sidebar"]',
+    action: 'Look at the highlighted sidebar, then click "Next"',
   },
   {
     id: 'select-house',
-    title: 'Select House Tool',
-    description: 'Click on the house icon to select it. Houses provide homes for your citizens.',
+    title: 'Select Residential Zone',
+    description: 'In the sidebar, look for "Residential" in the zones section. This will let you zone areas where houses can be built automatically.',
     icon: <Home className="h-6 w-6" />,
-    position: 'right',
-    action: 'Click the house tool in the sidebar',
-    condition: (state) => state.selectedTool === 'house_small',
+    position: 'center',
+    target: '[data-tool="zone_residential"]',
+    action: 'Click the highlighted "Residential" zone tool',
+    condition: (state) => state.selectedTool === 'zone_residential',
   },
   {
     id: 'place-house',
-    title: 'Place Your First House',
-    description: 'Now click anywhere on the green grass to place a house. This will be your first building!',
+    title: 'Zone Residential Area',
+    description: 'Great! Now click on the green grass to create a residential zone. Houses will automatically appear in zoned areas over time.',
     icon: <Home className="h-6 w-6" />,
     position: 'center',
-    action: 'Click on the grass to place a house',
+    action: 'Click on the grass to create residential zones',
     condition: (state) => {
-      // Check if any house has been placed
+      // Check if any residential zone has been placed
       for (const row of state.grid) {
         for (const tile of row) {
-          if (tile.building.type === 'house_small') return true;
+          if (tile.zone === 'residential') return true;
         }
       }
       return false;
@@ -72,34 +73,35 @@ const TUTORIAL_STEPS: TutorialStep[] = [
   },
   {
     id: 'place-more-houses',
-    title: 'Build More Houses',
-    description: 'Great! Place 2-3 more houses to create a small neighborhood. Each house costs $100.',
+    title: 'Zone More Areas',
+    description: 'Excellent! Create 2-3 more residential zones to build a neighborhood. Each zone costs $50 and houses will appear automatically.',
     icon: <Home className="h-6 w-6" />,
     position: 'center',
-    action: 'Place 2-3 more houses',
+    action: 'Create 2-3 more residential zones',
     condition: (state) => {
-      let houseCount = 0;
+      let zoneCount = 0;
       for (const row of state.grid) {
         for (const tile of row) {
-          if (tile.building.type === 'house_small') houseCount++;
+          if (tile.zone === 'residential') zoneCount++;
         }
       }
-      return houseCount >= 3;
+      return zoneCount >= 3;
     },
   },
   {
     id: 'select-road',
     title: 'Connect with Roads',
-    description: 'Houses need roads to connect to each other. Select the road tool.',
+    description: 'Houses need roads to connect to each other. Find and click the road tool in the sidebar.',
     icon: <ArrowRight className="h-6 w-6" />,
-    position: 'right',
-    action: 'Click the road tool in the sidebar',
+    position: 'center',
+    target: '[data-tool="road"]',
+    action: 'Click the highlighted road tool',
     condition: (state) => state.selectedTool === 'road',
   },
   {
     id: 'place-roads',
     title: 'Build Roads',
-    description: 'Connect your houses with roads. You can drag to build multiple road tiles at once!',
+    description: 'Perfect! Now connect your houses with roads. Click between houses to build road tiles.',
     icon: <ArrowRight className="h-6 w-6" />,
     position: 'center',
     action: 'Build roads connecting your houses',
@@ -114,34 +116,9 @@ const TUTORIAL_STEPS: TutorialStep[] = [
     },
   },
   {
-    id: 'add-power',
-    title: 'Power Your City',
-    description: 'Your city needs electricity! Build a power plant to provide power to your buildings.',
-    icon: <Zap className="h-6 w-6" />,
-    position: 'right',
-    action: 'Find and click the power plant tool',
-    condition: (state) => state.selectedTool === 'power_plant',
-  },
-  {
-    id: 'place-power',
-    title: 'Place Power Plant',
-    description: 'Place the power plant somewhere near your houses. It\'s a 2x2 building, so make sure there\'s space!',
-    icon: <Zap className="h-6 w-6" />,
-    position: 'center',
-    action: 'Click to place the power plant',
-    condition: (state) => {
-      for (const row of state.grid) {
-        for (const tile of row) {
-          if (tile.building.type === 'power_plant') return true;
-        }
-      }
-      return false;
-    },
-  },
-  {
     id: 'tutorial-complete',
-    title: 'Tutorial Complete!',
-    description: 'Congratulations! You\'ve built your first neighborhood. Your city will now start generating population and income. Explore the other tools and build your dream city!',
+    title: 'Great Start!',
+    description: 'Awesome! You\'ve built your first neighborhood. Your city will now start generating population and income. Try the "Getting Started" panel for more guidance!',
     icon: <CheckCircle className="h-6 w-6" />,
     position: 'center',
     action: 'Click "Finish" to start playing',
@@ -214,72 +191,142 @@ export function TutorialOverlay() {
   const isLastStep = currentStep === TUTORIAL_STEPS.length - 1;
   const isFirstStep = currentStep === 0;
 
+  // Create spotlight effect for targeted elements
+  const [spotlightRect, setSpotlightRect] = useState<DOMRect | null>(null);
+  
+  useEffect(() => {
+    if (!step.target) {
+      setSpotlightRect(null);
+      return;
+    }
+    
+    const updateSpotlight = () => {
+      const targetElement = document.querySelector(step.target!);
+      if (targetElement) {
+        setSpotlightRect(targetElement.getBoundingClientRect());
+      }
+    };
+    
+    // Initial update
+    updateSpotlight();
+    
+    // Update on resize/scroll
+    window.addEventListener('resize', updateSpotlight);
+    window.addEventListener('scroll', updateSpotlight);
+    
+    return () => {
+      window.removeEventListener('resize', updateSpotlight);
+      window.removeEventListener('scroll', updateSpotlight);
+    };
+  }, [step.target]);
+
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md mx-auto shadow-2xl border-2">
-        <CardHeader className="pb-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 rounded-lg text-blue-600">
-                {step.icon}
-              </div>
-              <div>
-                <CardTitle className="text-lg">{step.title}</CardTitle>
-                <Badge variant="secondary" className="mt-1">
-                  Step {currentStep + 1} of {TUTORIAL_STEPS.length}
-                </Badge>
+    <div className="fixed inset-0 z-40 pointer-events-none">
+      {/* Semi-transparent backdrop only for first step */}
+      {isFirstStep && (
+        <div className="absolute inset-0 bg-black/30 pointer-events-auto" />
+      )}
+      
+      {/* Spotlight effect for targeted elements */}
+      {step.target && spotlightRect && (
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Dark overlay with cutout */}
+          <div 
+            className="absolute inset-0 bg-black/40"
+            style={{
+              clipPath: `polygon(0% 0%, 0% 100%, ${spotlightRect.left - 8}px 100%, ${spotlightRect.left - 8}px ${spotlightRect.top - 8}px, ${spotlightRect.right + 8}px ${spotlightRect.top - 8}px, ${spotlightRect.right + 8}px ${spotlightRect.bottom + 8}px, ${spotlightRect.left - 8}px ${spotlightRect.bottom + 8}px, ${spotlightRect.left - 8}px 100%, 100% 100%, 100% 0%)`
+            }}
+          />
+          {/* Pulsing highlight ring */}
+          <div
+            className="absolute border-4 border-blue-400 rounded-lg animate-pulse pointer-events-none"
+            style={{
+              left: spotlightRect.left - 8,
+              top: spotlightRect.top - 8,
+              width: spotlightRect.width + 16,
+              height: spotlightRect.height + 16,
+              boxShadow: '0 0 20px rgba(59, 130, 246, 0.5)',
+            }}
+          />
+        </div>
+      )}
+      
+      {/* Tutorial card positioned to not block interactions */}
+      <div className="absolute top-4 right-4 pointer-events-auto">
+        <Card className="w-80 shadow-2xl border-2 bg-white">
+          <CardHeader className="pb-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-100 rounded-lg text-blue-600">
+                  {step.icon}
+                </div>
+                <div>
+                  <CardTitle className="text-lg">{step.title}</CardTitle>
+                  <Badge variant="secondary" className="mt-1">
+                    Step {currentStep + 1} of {TUTORIAL_STEPS.length}
+                  </Badge>
+                </div>
               </div>
             </div>
-          </div>
-        </CardHeader>
-        
-        <CardContent className="space-y-4">
-          <CardDescription className="text-base leading-relaxed">
-            {step.description}
-          </CardDescription>
+          </CardHeader>
           
-          {step.action && (
-            <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-              <p className="text-sm font-medium text-blue-800">
-                👆 {step.action}
-              </p>
-            </div>
-          )}
-          
-          <div className="flex justify-between items-center pt-4">
-            <Button 
-              variant="ghost" 
-              onClick={handleSkip}
-              className="text-gray-500"
-            >
-              Skip Tutorial
-            </Button>
+          <CardContent className="space-y-4">
+            <CardDescription className="text-base leading-relaxed">
+              {step.description}
+            </CardDescription>
             
-            <div className="flex gap-2">
-              {isFirstStep ? (
-                <Button onClick={handleStart} className="flex items-center gap-2">
-                  <Play className="h-4 w-4" />
-                  Start Tutorial
-                </Button>
-              ) : isLastStep ? (
-                <Button onClick={handleFinish} className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4" />
-                  Finish
-                </Button>
-              ) : step.condition ? (
-                <Button disabled className="flex items-center gap-2">
-                  Waiting for action...
-                </Button>
-              ) : (
-                <Button onClick={handleNext} className="flex items-center gap-2">
-                  Next
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              )}
+            {step.action && (
+              <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                <p className="text-sm font-medium text-blue-800">
+                  👆 {step.action}
+                </p>
+              </div>
+            )}
+            
+            {step.target && !step.condition && (
+              <div className="p-2 bg-yellow-50 rounded border border-yellow-200">
+                <p className="text-xs text-yellow-700">
+                  💡 Look for the highlighted element on screen
+                </p>
+              </div>
+            )}
+            
+            <div className="flex justify-between items-center pt-4">
+              <Button 
+                variant="ghost" 
+                onClick={handleSkip}
+                className="text-gray-500"
+                size="sm"
+              >
+                Skip Tutorial
+              </Button>
+              
+              <div className="flex gap-2">
+                {isFirstStep ? (
+                  <Button onClick={handleStart} size="sm" className="flex items-center gap-2">
+                    <Play className="h-4 w-4" />
+                    Start Tutorial
+                  </Button>
+                ) : isLastStep ? (
+                  <Button onClick={handleFinish} size="sm" className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4" />
+                    Finish
+                  </Button>
+                ) : step.condition ? (
+                  <Button disabled size="sm" className="flex items-center gap-2">
+                    Waiting for action...
+                  </Button>
+                ) : (
+                  <Button onClick={handleNext} size="sm" className="flex items-center gap-2">
+                    Next
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

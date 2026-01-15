@@ -566,7 +566,7 @@ export const Sidebar = React.memo(function Sidebar({ onExit }: { onExit?: () => 
   ], []);
   
   return (
-    <div className="w-56 bg-sidebar border-r border-sidebar-border flex flex-col h-screen fixed left-0 top-0 z-40">
+    <div className="w-56 bg-sidebar border-r border-sidebar-border flex flex-col h-screen fixed left-0 top-0 z-40" data-tutorial="sidebar">
       <div className="px-4 py-4 border-b border-sidebar-border">
         <div className="flex items-center justify-between">
           <span className="text-sidebar-foreground font-bold tracking-tight">ISOCITY</span>
@@ -649,6 +649,7 @@ export const Sidebar = React.memo(function Sidebar({ onExit }: { onExit?: () => 
                       isSelected ? 'bg-primary text-primary-foreground' : ''
                     }`}
                     title={`${m(info.description)}${info.cost > 0 ? ` - Cost: $${info.cost}` : ''}`}
+                    data-tool={tool}
                   >
                     <span className="flex-1 text-left truncate">{m(info.name)}</span>
                     {info.cost > 0 && (
