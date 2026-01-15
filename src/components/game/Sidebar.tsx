@@ -28,6 +28,8 @@ const UI_LABELS = {
   statistics: msg('Statistics'),
   advisors: msg('Advisors'),
   settings: msg('Settings'),
+  achievements: msg('Achievements'),
+  'getting-started': msg('Getting Started'),
 };
 import {
   BudgetIcon,
@@ -38,7 +40,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { openCommandMenu } from '@/components/ui/CommandMenu';
-import { Users } from 'lucide-react';
+import { Users, Trophy, BookOpen } from 'lucide-react';
 import { ShareModal } from '@/components/multiplayer/ShareModal';
 import { useMultiplayerOptional } from '@/context/MultiplayerContext';
 import {
@@ -703,11 +705,27 @@ export const Sidebar = React.memo(function Sidebar({ onExit }: { onExit?: () => 
       </ScrollArea>
       
       <div className="border-t border-sidebar-border p-2">
-        <div className="grid grid-cols-4 gap-1">
+        {/* Getting Started button for new players */}
+        {state.stats.population < 50 && (
+          <div className="mb-2">
+            <Button
+              onClick={() => setActivePanel(activePanel === 'getting-started' ? 'none' : 'getting-started')}
+              variant={activePanel === 'getting-started' ? 'default' : 'outline'}
+              size="sm"
+              className="w-full text-xs bg-green-50 border-green-200 text-green-700 hover:bg-green-100"
+            >
+              <BookOpen size={14} className="mr-1" />
+              Getting Started
+            </Button>
+          </div>
+        )}
+        
+        <div className="grid grid-cols-5 gap-1">
           {[
             { panel: 'budget' as const, icon: <BudgetIcon size={16} />, labelKey: 'budget' as const },
             { panel: 'statistics' as const, icon: <ChartIcon size={16} />, labelKey: 'statistics' as const },
             { panel: 'advisors' as const, icon: <AdvisorIcon size={16} />, labelKey: 'advisors' as const },
+            { panel: 'achievements' as const, icon: <Trophy size={16} />, labelKey: 'achievements' as const },
             { panel: 'settings' as const, icon: <SettingsIcon size={16} />, labelKey: 'settings' as const },
           ].map(({ panel, icon, labelKey }) => (
             <Button

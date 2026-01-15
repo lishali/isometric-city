@@ -30,10 +30,13 @@ import {
   StatisticsPanel,
   SettingsPanel,
   AdvisorsPanel,
+  AchievementPanel,
+  GettingStartedPanel,
 } from '@/components/game/panels';
 import { MiniMap } from '@/components/game/MiniMap';
 import { TopBar, StatsPanel } from '@/components/game/TopBar';
 import { CanvasIsometricGrid } from '@/components/game/CanvasIsometricGrid';
+import { TutorialOverlay } from '@/components/game/TutorialOverlay';
 
 // Cargo type names for notifications
 const CARGO_TYPE_NAMES = [msg('containers'), msg('bulk materials'), msg('oil')];
@@ -325,6 +328,7 @@ export default function Game({ onExit }: { onExit?: () => void }) {
           {state.activePanel === 'budget' && <BudgetPanel />}
           {state.activePanel === 'statistics' && <StatisticsPanel />}
           {state.activePanel === 'advisors' && <AdvisorsPanel />}
+          {state.activePanel === 'achievements' && <AchievementPanel />}
           {state.activePanel === 'settings' && <SettingsPanel />}
           
           <VinnieDialog open={showVinnieDialog} onOpenChange={setShowVinnieDialog} />
@@ -404,10 +408,15 @@ export default function Game({ onExit }: { onExit?: () => void }) {
         {state.activePanel === 'budget' && <BudgetPanel />}
         {state.activePanel === 'statistics' && <StatisticsPanel />}
         {state.activePanel === 'advisors' && <AdvisorsPanel />}
+        {state.activePanel === 'achievements' && <AchievementPanel />}
+        {state.activePanel === 'getting-started' && <GettingStartedPanel />}
         {state.activePanel === 'settings' && <SettingsPanel />}
         
         <VinnieDialog open={showVinnieDialog} onOpenChange={setShowVinnieDialog} />
         <CommandMenu />
+        
+        {/* Tutorial Overlay for new players */}
+        <TutorialOverlay />
         
         {/* Tip Toast for helping new players */}
         <TipToast

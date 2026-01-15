@@ -7,6 +7,7 @@ import { Building } from './buildings';
 import { ZoneType } from './zones';
 import { Stats, Budget, CityEconomy, HistoryPoint } from './economy';
 import { ServiceCoverage } from './services';
+import type { Achievement } from '@/lib/achievements';
 
 export type Tool =
   | 'select' | 'bulldoze' | 'road' | 'rail' | 'subway'
@@ -167,12 +168,13 @@ export interface GameState {
   notifications: Notification[];
   advisorMessages: AdvisorMessage[];
   history: HistoryPoint[];
-  activePanel: 'none' | 'budget' | 'statistics' | 'advisors' | 'settings';
+  activePanel: 'none' | 'budget' | 'statistics' | 'advisors' | 'settings' | 'achievements' | 'getting-started';
   disastersEnabled: boolean;
   adjacentCities: AdjacentCity[];
   waterBodies: WaterBody[];
   gameVersion: number;
   cities: City[];
+  achievements?: Achievement[];
 }
 
 export interface SavedCityMeta {

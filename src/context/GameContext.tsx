@@ -817,6 +817,34 @@ export function GameProvider({ children, startFresh = false }: { children: React
         
         // PERF: Run simulation and update ref immediately (for canvas)
         const newState = simulateTick(latestStateRef.current);
+        
+        // Check for newly unlocked achievements
+        const { checkAchievements } = require('@/lib/achievements');
+        const newlyUnlocked = checkAchievements(newState);
+        
+        // Add achievement notifications
+        if (newlyUnlocked.length > 0) {
+          const achievementNotifications = newlyUnlocked.map((achievement: any) => ({
+            id: `achievement-${achievement.id}-${Date.now()}`,
+            title: `🏆 Achievement Unlocked!`,
+            description: `${achievement.name}: ${achievement.description}`,
+            icon: achievement.icon,
+            timestamp: Date.now(),
+          }));
+          
+          newState.notifications = [...newState.notifications, ...achievementNotifications];
+          
+          // Apply achievement rewards
+          newlyUnlocked.forEach((achievement: any) => {
+            if (achievement.reward.money) {
+              newState.stats.money += achievement.reward.money;
+            }
+            if (achievement.reward.happinessBonus) {
+              newState.stats.happiness = Math.min(100, newState.stats.happiness + achievement.reward.happinessBonus);
+            }
+          });
+        }
+        
         latestStateRef.current = newState;
         stateChangedRef.current = true;
         

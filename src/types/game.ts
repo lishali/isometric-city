@@ -15,3 +15,6 @@
 
 // Re-export all types from the IsoCity module
 export * from '@/games/isocity/types';
+
+// Import and re-export achievement types
+export type { Achievement } from '@/lib/achievements';

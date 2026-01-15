@@ -2426,6 +2426,7 @@ export function simulateTick(state: GameState): GameState {
     advisorMessages,
     notifications: newNotifications,
     history,
+    achievements: state.achievements || [],
   };
 }
 
