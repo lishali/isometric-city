@@ -5,6 +5,7 @@ import React, { createContext, useCallback, useContext, useEffect, useState, use
 import { compressToUTF16, decompressFromUTF16 } from 'lz-string';
 import { serializeAndCompressAsync } from '@/lib/saveWorkerManager';
 import { simulateTick } from '@/lib/simulation';
+import { checkAchievements } from '@/lib/achievements';
 import {
   Budget,
   BuildingType,
@@ -819,7 +820,6 @@ export function GameProvider({ children, startFresh = false }: { children: React
         const newState = simulateTick(latestStateRef.current);
         
         // Check for newly unlocked achievements
-        const { checkAchievements } = require('@/lib/achievements');
         const newlyUnlocked = checkAchievements(newState);
         
         // Add achievement notifications
