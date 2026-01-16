@@ -7,7 +7,7 @@
  */
 
 import { Building, BuildingType } from '@/types/game';
-import { SpritePack, getActiveSpritePack, getSpriteCoords, BUILDING_TO_SPRITE, SPRITE_VERTICAL_OFFSETS, SPRITE_HORIZONTAL_OFFSETS } from '@/lib/renderConfig';
+import { SpritePack, getActiveSpritePack, getSpriteCoords, getIndividualSpriteSrc, BUILDING_TO_SPRITE, SPRITE_VERTICAL_OFFSETS, SPRITE_HORIZONTAL_OFFSETS } from '@/lib/renderConfig';
 import { getBuildingSize, requiresWaterAdjacency } from '@/lib/simulation';
 import { TILE_WIDTH, TILE_HEIGHT } from './types';
 
@@ -80,6 +80,18 @@ export function selectSpriteSource(
   tileY: number,
   activePack: SpritePack = getActiveSpritePack()
 ): SpriteSourceResult {
+  // Check if this pack uses individual sprites
+  if (activePack.individualSprites) {
+    const spriteKey = activePack.buildingToSprite[buildingType];
+    if (spriteKey && activePack.individualSprites[spriteKey]) {
+      return {
+        source: activePack.individualSprites[spriteKey],
+        variantType: 'normal',
+        variant: null,
+      };
+    }
+  }
+  
   const isUnderConstruction = building.constructionProgress !== undefined &&
                               building.constructionProgress < 100;
   const constructionProgress = building.constructionProgress ?? 100;

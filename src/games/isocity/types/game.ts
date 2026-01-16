@@ -168,7 +168,7 @@ export interface GameState {
   notifications: Notification[];
   advisorMessages: AdvisorMessage[];
   history: HistoryPoint[];
-  activePanel: 'none' | 'budget' | 'statistics' | 'advisors' | 'settings' | 'achievements' | 'getting-started';
+  activePanel: 'none' | 'budget' | 'statistics' | 'advisors' | 'settings' | 'achievements' | 'getting-started' | 'themes';
   disastersEnabled: boolean;
   adjacentCities: AdjacentCity[];
   waterBodies: WaterBody[];

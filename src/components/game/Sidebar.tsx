@@ -30,6 +30,7 @@ const UI_LABELS = {
   settings: msg('Settings'),
   achievements: msg('Achievements'),
   'getting-started': msg('Getting Started'),
+  themes: msg('Themes'),
 };
 import {
   BudgetIcon,
@@ -40,7 +41,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { openCommandMenu } from '@/components/ui/CommandMenu';
-import { Users, Trophy, BookOpen } from 'lucide-react';
+import { Users, Trophy, BookOpen, Palette } from 'lucide-react';
 import { ShareModal } from '@/components/multiplayer/ShareModal';
 import { useMultiplayerOptional } from '@/context/MultiplayerContext';
 import {
@@ -721,12 +722,13 @@ export const Sidebar = React.memo(function Sidebar({ onExit }: { onExit?: () => 
           </div>
         )}
         
-        <div className="grid grid-cols-5 gap-1">
+        <div className="grid grid-cols-3 gap-1">
           {[
             { panel: 'budget' as const, icon: <BudgetIcon size={16} />, labelKey: 'budget' as const },
             { panel: 'statistics' as const, icon: <ChartIcon size={16} />, labelKey: 'statistics' as const },
             { panel: 'advisors' as const, icon: <AdvisorIcon size={16} />, labelKey: 'advisors' as const },
             { panel: 'achievements' as const, icon: <Trophy size={16} />, labelKey: 'achievements' as const },
+            { panel: 'themes' as const, icon: <Palette size={16} />, labelKey: 'themes' as const },
             { panel: 'settings' as const, icon: <SettingsIcon size={16} />, labelKey: 'settings' as const },
           ].map(({ panel, icon, labelKey }) => (
             <Button

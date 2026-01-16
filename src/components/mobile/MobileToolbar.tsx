@@ -224,6 +224,7 @@ const UI_LABELS = {
   statistics: msg('Statistics'),
   advisors: msg('Advisors'),
   settings: msg('Settings'),
+  themes: msg('Themes'),
 };
 
 const toolCategories = {
@@ -242,7 +243,7 @@ const toolCategories = {
 type OverlayMode = 'none' | 'power' | 'water' | 'fire' | 'police' | 'health' | 'education' | 'subway';
 
 interface MobileToolbarProps {
-  onOpenPanel: (panel: 'budget' | 'statistics' | 'advisors' | 'settings') => void;
+  onOpenPanel: (panel: 'budget' | 'statistics' | 'advisors' | 'settings' | 'themes') => void;
   overlayMode?: OverlayMode;
   setOverlayMode?: (mode: OverlayMode) => void;
 }
@@ -394,7 +395,7 @@ export function MobileToolbar({ onOpenPanel, overlayMode = 'none', setOverlayMod
               <div className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
                 {m(msg('City Management'))}
               </div>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-5 gap-2">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -418,6 +419,14 @@ export function MobileToolbar({ onOpenPanel, overlayMode = 'none', setOverlayMod
                   onClick={() => { onOpenPanel('advisors'); setShowMenu(false); }}
                 >
                   {m(UI_LABELS.advisors)}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-10 w-full text-xs"
+                  onClick={() => { onOpenPanel('themes'); setShowMenu(false); }}
+                >
+                  {m(UI_LABELS.themes)}
                 </Button>
                 <Button
                   variant="ghost"

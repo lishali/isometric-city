@@ -32,6 +32,7 @@ import {
   AdvisorsPanel,
   AchievementPanel,
   GettingStartedPanel,
+  ThemeSelector,
 } from '@/components/game/panels';
 import { MiniMap } from '@/components/game/MiniMap';
 import { TopBar, StatsPanel } from '@/components/game/TopBar';
@@ -330,6 +331,7 @@ export default function Game({ onExit }: { onExit?: () => void }) {
           {state.activePanel === 'advisors' && <AdvisorsPanel />}
           {state.activePanel === 'achievements' && <AchievementPanel />}
           {state.activePanel === 'settings' && <SettingsPanel />}
+          {state.activePanel === 'themes' && <ThemeSelector />}
           
           <VinnieDialog open={showVinnieDialog} onOpenChange={setShowVinnieDialog} />
           
@@ -411,6 +413,7 @@ export default function Game({ onExit }: { onExit?: () => void }) {
         {state.activePanel === 'achievements' && <AchievementPanel />}
         {state.activePanel === 'getting-started' && <GettingStartedPanel />}
         {state.activePanel === 'settings' && <SettingsPanel />}
+        {state.activePanel === 'themes' && <ThemeSelector />}
         
         <VinnieDialog open={showVinnieDialog} onOpenChange={setShowVinnieDialog} />
         <CommandMenu />

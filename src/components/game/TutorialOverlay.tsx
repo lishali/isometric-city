@@ -5,7 +5,7 @@ import { useGame } from '@/context/GameContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, ArrowDown, ArrowLeft, CheckCircle, Play, Home, Building, Zap } from 'lucide-react';
+import { ArrowRight, CheckCircle, Play, Home, Building } from 'lucide-react';
 
 interface TutorialStep {
   id: string;

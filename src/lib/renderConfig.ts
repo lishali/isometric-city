@@ -50,6 +50,9 @@ export interface SpritePack {
   // Per-sprite horizontal offset adjustments (positive = right, negative = left)
   // Values are multiplied by tile width for consistent scaling
   horizontalOffsets: Record<string, number>;
+  // Individual sprite files (alternative to sprite sheets)
+  // Maps sprite keys to individual image file paths
+  individualSprites?: Record<string, string>;
   // Per-building-type vertical offset overrides (takes precedence over sprite-key offsets)
   // Use this when multiple building types share a sprite but need different positioning
   buildingVerticalOffsets?: Record<string, number>;
@@ -741,6 +744,610 @@ const SPRITE_PACK_SPRITES4_CHINA: SpritePack = {
 };
 
 // ============================================================================
+// SPRITE PACK: INDIVIDUAL BUILDING THEMES
+// ============================================================================
+// These themes use individual building sprites instead of sprite sheets
+
+// Helper function to create smart building mappings for individual sprite themes
+function createIndividualSpriteBuildingMapping(): Record<string, string> {
+  return {
+    // Residential buildings -> house.png
+    house_small: 'house',
+    house_medium: 'house',
+    mansion: 'house',
+    apartment_low: 'house',
+    apartment_high: 'house',
+    // Small commercial -> shop.png
+    shop_small: 'shop',
+    shop_medium: 'shop',
+    // Large commercial/industrial -> market.png
+    office_low: 'market',
+    office_high: 'market',
+    mall: 'market',
+    factory_small: 'market',
+    factory_medium: 'market',
+    factory_large: 'market',
+    warehouse: 'market',
+    // Institutional/service buildings -> university.png
+    police_station: 'university',
+    fire_station: 'university',
+    hospital: 'university',
+    school: 'university',
+    university: 'university',
+    city_hall: 'university',
+    power_plant: 'university',
+    water_tower: 'university',
+    airport: 'university',
+    space_program: 'university',
+    stadium: 'university',
+    museum: 'university',
+    amusement_park: 'university',
+    subway_station: 'university',
+    // Parks and recreation -> park.png
+    park: 'park',
+    park_large: 'park',
+    tennis: 'park',
+    tree: 'park',
+    // All the detailed park buildings -> park.png
+    basketball_courts: 'park',
+    playground_small: 'park',
+    playground_large: 'park',
+    baseball_field_small: 'park',
+    soccer_field_small: 'park',
+    football_field: 'park',
+    baseball_stadium: 'park',
+    community_center: 'park',
+    swimming_pool: 'park',
+    skate_park: 'park',
+    mini_golf_course: 'park',
+    bleachers_field: 'park',
+    go_kart_track: 'park',
+    amphitheater: 'park',
+    greenhouse_garden: 'park',
+    animal_pens_farm: 'park',
+    cabin_house: 'park',
+    campground: 'park',
+    marina_docks_small: 'park',
+    pier_large: 'park',
+    roller_coaster_small: 'park',
+    community_garden: 'park',
+    pond_park: 'park',
+    park_gate: 'park',
+    mountain_lodge: 'park',
+    mountain_trailhead: 'park',
+    // Terrain -> grass.png
+    water: 'grass',
+  };
+}
+
+const SPRITE_PACK_CANDY_LAND: SpritePack = {
+  id: 'candy_land',
+  name: 'Candy Land',
+  src: '/assets/candy_land_Candy_Land/assets/house.png', // Fallback main sprite
+  cols: 1,
+  rows: 1,
+  layout: 'row',
+  spriteOrder: ['house'] as const,
+  verticalOffsets: {},
+  horizontalOffsets: {},
+  buildingToSprite: createIndividualSpriteBuildingMapping(),
+  // Individual building sprites mapping
+  individualSprites: {
+    house: '/assets/candy_land_Candy_Land/assets/house.png',
+    shop: '/assets/candy_land_Candy_Land/assets/shop.png',
+    market: '/assets/candy_land_Candy_Land/assets/market.png',
+    park: '/assets/candy_land_Candy_Land/assets/park.png',
+    university: '/assets/candy_land_Candy_Land/assets/university.png',
+    grass: '/assets/candy_land_Candy_Land/assets/grass.png',
+  },
+};
+
+const SPRITE_PACK_CYBERPUNK: SpritePack = {
+  id: 'cyberpunk_city',
+  name: 'Cyberpunk City',
+  src: '/assets/cyberpunk_city_Cyberpunk_City/assets/house.png',
+  cols: 1,
+  rows: 1,
+  layout: 'row',
+  spriteOrder: ['house'] as const,
+  verticalOffsets: {},
+  horizontalOffsets: {},
+  buildingToSprite: createIndividualSpriteBuildingMapping(),
+  individualSprites: {
+    house: '/assets/cyberpunk_city_Cyberpunk_City/assets/house.png',
+    shop: '/assets/cyberpunk_city_Cyberpunk_City/assets/shop.png',
+    market: '/assets/cyberpunk_city_Cyberpunk_City/assets/market.png',
+    park: '/assets/cyberpunk_city_Cyberpunk_City/assets/park.png',
+    university: '/assets/cyberpunk_city_Cyberpunk_City/assets/university.png',
+    grass: '/assets/cyberpunk_city_Cyberpunk_City/assets/grass.png',
+  },
+};
+
+const SPRITE_PACK_FANTASY: SpritePack = {
+  id: 'fantasy_kingdom',
+  name: 'Fantasy Kingdom',
+  src: '/assets/fantasy_kingdom_Fantasy_Kingdom/assets/house.png',
+  cols: 1,
+  rows: 1,
+  layout: 'row',
+  spriteOrder: ['house'] as const,
+  verticalOffsets: {},
+  horizontalOffsets: {},
+  buildingToSprite: {
+    house_small: 'house',
+    house_medium: 'house',
+    mansion: 'house',
+    apartment_low: 'house',
+    apartment_high: 'house',
+    shop_small: 'shop',
+    shop_medium: 'shop',
+    office_low: 'market',
+    office_high: 'market',
+    mall: 'market',
+    factory_small: 'market',
+    factory_medium: 'market',
+    factory_large: 'market',
+    warehouse: 'market',
+    police_station: 'university',
+    fire_station: 'university',
+    hospital: 'university',
+    school: 'university',
+    university: 'university',
+    park: 'park',
+    park_large: 'park',
+    tennis: 'park',
+    power_plant: 'university',
+    water_tower: 'university',
+    stadium: 'university',
+    museum: 'university',
+    airport: 'university',
+    space_program: 'university',
+    tree: 'park',
+    water: 'grass',
+    subway_station: 'university',
+    city_hall: 'university',
+    amusement_park: 'university',
+  },
+  individualSprites: {
+    house: '/assets/fantasy_kingdom_Fantasy_Kingdom/assets/house.png',
+    shop: '/assets/fantasy_kingdom_Fantasy_Kingdom/assets/shop.png',
+    market: '/assets/fantasy_kingdom_Fantasy_Kingdom/assets/market.png',
+    park: '/assets/fantasy_kingdom_Fantasy_Kingdom/assets/park.png',
+    university: '/assets/fantasy_kingdom_Fantasy_Kingdom/assets/university.png',
+    grass: '/assets/fantasy_kingdom_Fantasy_Kingdom/assets/grass.png',
+  },
+};
+
+const SPRITE_PACK_JAPANESE: SpritePack = {
+  id: 'japanese_town',
+  name: 'Japanese Town',
+  src: '/assets/japanese_town_Japanese_Town/assets/house.png',
+  cols: 1,
+  rows: 1,
+  layout: 'row',
+  spriteOrder: ['house'] as const,
+  verticalOffsets: {},
+  horizontalOffsets: {},
+  buildingToSprite: {
+    house_small: 'house',
+    house_medium: 'house',
+    mansion: 'house',
+    apartment_low: 'house',
+    apartment_high: 'house',
+    shop_small: 'shop',
+    shop_medium: 'shop',
+    office_low: 'market',
+    office_high: 'market',
+    mall: 'market',
+    factory_small: 'market',
+    factory_medium: 'market',
+    factory_large: 'market',
+    warehouse: 'market',
+    police_station: 'university',
+    fire_station: 'university',
+    hospital: 'university',
+    school: 'university',
+    university: 'university',
+    park: 'park',
+    park_large: 'park',
+    tennis: 'park',
+    power_plant: 'university',
+    water_tower: 'university',
+    stadium: 'university',
+    museum: 'university',
+    airport: 'university',
+    space_program: 'university',
+    tree: 'park',
+    water: 'grass',
+    subway_station: 'university',
+    city_hall: 'university',
+    amusement_park: 'university',
+  },
+  individualSprites: {
+    house: '/assets/japanese_town_Japanese_Town/assets/house.png',
+    shop: '/assets/japanese_town_Japanese_Town/assets/shop.png',
+    market: '/assets/japanese_town_Japanese_Town/assets/market.png',
+    park: '/assets/japanese_town_Japanese_Town/assets/park.png',
+    university: '/assets/japanese_town_Japanese_Town/assets/university.png',
+    grass: '/assets/japanese_town_Japanese_Town/assets/grass.png',
+  },
+};
+
+const SPRITE_PACK_MEDIEVAL_VILLAGE: SpritePack = {
+  id: 'medieval_village',
+  name: 'Medieval Village',
+  src: '/assets/medieval_village_Medieval_Village/assets/house.png',
+  cols: 1,
+  rows: 1,
+  layout: 'row',
+  spriteOrder: ['house'] as const,
+  verticalOffsets: {},
+  horizontalOffsets: {},
+  buildingToSprite: {
+    house_small: 'house',
+    house_medium: 'house',
+    mansion: 'house',
+    apartment_low: 'house',
+    apartment_high: 'house',
+    shop_small: 'shop',
+    shop_medium: 'shop',
+    office_low: 'market',
+    office_high: 'market',
+    mall: 'market',
+    factory_small: 'market',
+    factory_medium: 'market',
+    factory_large: 'market',
+    warehouse: 'market',
+    police_station: 'university',
+    fire_station: 'university',
+    hospital: 'university',
+    school: 'university',
+    university: 'university',
+    park: 'park',
+    park_large: 'park',
+    tennis: 'park',
+    power_plant: 'university',
+    water_tower: 'university',
+    stadium: 'university',
+    museum: 'university',
+    airport: 'university',
+    space_program: 'university',
+    tree: 'park',
+    water: 'grass',
+    subway_station: 'university',
+    city_hall: 'university',
+    amusement_park: 'university',
+  },
+  individualSprites: {
+    house: '/assets/medieval_village_Medieval_Village/assets/house.png',
+    shop: '/assets/medieval_village_Medieval_Village/assets/shop.png',
+    market: '/assets/medieval_village_Medieval_Village/assets/market.png',
+    park: '/assets/medieval_village_Medieval_Village/assets/park.png',
+    university: '/assets/medieval_village_Medieval_Village/assets/university.png',
+    grass: '/assets/medieval_village_Medieval_Village/assets/grass.png',
+  },
+};
+
+const SPRITE_PACK_SPACE_COLONY: SpritePack = {
+  id: 'space_colony',
+  name: 'Space Colony',
+  src: '/assets/space_colony_Space_Colony/assets/house.png',
+  cols: 1,
+  rows: 1,
+  layout: 'row',
+  spriteOrder: ['house'] as const,
+  verticalOffsets: {},
+  horizontalOffsets: {},
+  buildingToSprite: {
+    house_small: 'house',
+    house_medium: 'house',
+    mansion: 'house',
+    apartment_low: 'house',
+    apartment_high: 'house',
+    shop_small: 'shop',
+    shop_medium: 'shop',
+    office_low: 'market',
+    office_high: 'market',
+    mall: 'market',
+    factory_small: 'market',
+    factory_medium: 'market',
+    factory_large: 'market',
+    warehouse: 'market',
+    police_station: 'university',
+    fire_station: 'university',
+    hospital: 'university',
+    school: 'university',
+    university: 'university',
+    park: 'park',
+    park_large: 'park',
+    tennis: 'park',
+    power_plant: 'university',
+    water_tower: 'university',
+    stadium: 'university',
+    museum: 'university',
+    airport: 'university',
+    space_program: 'university',
+    tree: 'park',
+    water: 'grass',
+    subway_station: 'university',
+    city_hall: 'university',
+    amusement_park: 'university',
+  },
+  individualSprites: {
+    house: '/assets/space_colony_Space_Colony/assets/house.png',
+    shop: '/assets/space_colony_Space_Colony/assets/shop.png',
+    market: '/assets/space_colony_Space_Colony/assets/market.png',
+    park: '/assets/space_colony_Space_Colony/assets/park.png',
+    university: '/assets/space_colony_Space_Colony/assets/university.png',
+    grass: '/assets/space_colony_Space_Colony/assets/grass.png',
+  },
+};
+
+const SPRITE_PACK_STEAMPUNK: SpritePack = {
+  id: 'steampunk_city',
+  name: 'Steampunk City',
+  src: '/assets/steampunk_city_Steampunk_City/assets/house.png',
+  cols: 1,
+  rows: 1,
+  layout: 'row',
+  spriteOrder: ['house'] as const,
+  verticalOffsets: {},
+  horizontalOffsets: {},
+  buildingToSprite: {
+    house_small: 'house',
+    house_medium: 'house',
+    mansion: 'house',
+    apartment_low: 'house',
+    apartment_high: 'house',
+    shop_small: 'shop',
+    shop_medium: 'shop',
+    office_low: 'market',
+    office_high: 'market',
+    mall: 'market',
+    factory_small: 'market',
+    factory_medium: 'market',
+    factory_large: 'market',
+    warehouse: 'market',
+    police_station: 'university',
+    fire_station: 'university',
+    hospital: 'university',
+    school: 'university',
+    university: 'university',
+    park: 'park',
+    park_large: 'park',
+    tennis: 'park',
+    power_plant: 'university',
+    water_tower: 'university',
+    stadium: 'university',
+    museum: 'university',
+    airport: 'university',
+    space_program: 'university',
+    tree: 'park',
+    water: 'grass',
+    subway_station: 'university',
+    city_hall: 'university',
+    amusement_park: 'university',
+  },
+  individualSprites: {
+    house: '/assets/steampunk_city_Steampunk_City/assets/house.png',
+    shop: '/assets/steampunk_city_Steampunk_City/assets/shop.png',
+    market: '/assets/steampunk_city_Steampunk_City/assets/market.png',
+    park: '/assets/steampunk_city_Steampunk_City/assets/park.png',
+    university: '/assets/steampunk_city_Steampunk_City/assets/university.png',
+    grass: '/assets/steampunk_city_Steampunk_City/assets/grass.png',
+  },
+};
+
+const SPRITE_PACK_TROPICAL: SpritePack = {
+  id: 'tropical_resort',
+  name: 'Tropical Resort',
+  src: '/assets/tropical_resort_Tropical_Resort/assets/house.png',
+  cols: 1,
+  rows: 1,
+  layout: 'row',
+  spriteOrder: ['house'] as const,
+  verticalOffsets: {},
+  horizontalOffsets: {},
+  buildingToSprite: {
+    house_small: 'house',
+    house_medium: 'house',
+    mansion: 'house',
+    apartment_low: 'house',
+    apartment_high: 'house',
+    shop_small: 'shop',
+    shop_medium: 'shop',
+    office_low: 'market',
+    office_high: 'market',
+    mall: 'market',
+    factory_small: 'market',
+    factory_medium: 'market',
+    factory_large: 'market',
+    warehouse: 'market',
+    police_station: 'university',
+    fire_station: 'university',
+    hospital: 'university',
+    school: 'university',
+    university: 'university',
+    park: 'park',
+    park_large: 'park',
+    tennis: 'park',
+    power_plant: 'university',
+    water_tower: 'university',
+    stadium: 'university',
+    museum: 'university',
+    airport: 'university',
+    space_program: 'university',
+    tree: 'park',
+    water: 'grass',
+    subway_station: 'university',
+    city_hall: 'university',
+    amusement_park: 'university',
+  },
+  individualSprites: {
+    house: '/assets/tropical_resort_Tropical_Resort/assets/house.png',
+    shop: '/assets/tropical_resort_Tropical_Resort/assets/shop.png',
+    market: '/assets/tropical_resort_Tropical_Resort/assets/market.png',
+    park: '/assets/tropical_resort_Tropical_Resort/assets/park.png',
+    university: '/assets/tropical_resort_Tropical_Resort/assets/university.png',
+    grass: '/assets/tropical_resort_Tropical_Resort/assets/grass.png',
+  },
+};
+
+const SPRITE_PACK_UNDERWATER: SpritePack = {
+  id: 'underwater_city',
+  name: 'Underwater City',
+  src: '/assets/underwater_city_Underwater_City/assets/house.png',
+  cols: 1,
+  rows: 1,
+  layout: 'row',
+  spriteOrder: ['house'] as const,
+  verticalOffsets: {},
+  horizontalOffsets: {},
+  buildingToSprite: {
+    house_small: 'house',
+    house_medium: 'house',
+    mansion: 'house',
+    apartment_low: 'house',
+    apartment_high: 'house',
+    shop_small: 'shop',
+    shop_medium: 'shop',
+    office_low: 'market',
+    office_high: 'market',
+    mall: 'market',
+    factory_small: 'market',
+    factory_medium: 'market',
+    factory_large: 'market',
+    warehouse: 'market',
+    police_station: 'university',
+    fire_station: 'university',
+    hospital: 'university',
+    school: 'university',
+    university: 'university',
+    park: 'park',
+    park_large: 'park',
+    tennis: 'park',
+    power_plant: 'university',
+    water_tower: 'university',
+    stadium: 'university',
+    museum: 'university',
+    airport: 'university',
+    space_program: 'university',
+    tree: 'park',
+    water: 'grass',
+    subway_station: 'university',
+    city_hall: 'university',
+    amusement_park: 'university',
+  },
+  individualSprites: {
+    house: '/assets/underwater_city_Underwater_City/assets/house.png',
+    shop: '/assets/underwater_city_Underwater_City/assets/shop.png',
+    market: '/assets/underwater_city_Underwater_City/assets/market.png',
+    park: '/assets/underwater_city_Underwater_City/assets/park.png',
+    university: '/assets/underwater_city_Underwater_City/assets/university.png',
+    grass: '/assets/underwater_city_Underwater_City/assets/grass.png',
+  },
+};
+
+const SPRITE_PACK_WILD_WEST: SpritePack = {
+  id: 'wild_west_town',
+  name: 'Wild West Town',
+  src: '/assets/wild_west_town_Wild_West_Town/assets/house.png',
+  cols: 1,
+  rows: 1,
+  layout: 'row',
+  spriteOrder: ['house'] as const,
+  verticalOffsets: {},
+  horizontalOffsets: {},
+  buildingToSprite: {
+    house_small: 'house',
+    house_medium: 'house',
+    mansion: 'house',
+    apartment_low: 'house',
+    apartment_high: 'house',
+    shop_small: 'shop',
+    shop_medium: 'shop',
+    office_low: 'market',
+    office_high: 'market',
+    mall: 'market',
+    factory_small: 'market',
+    factory_medium: 'market',
+    factory_large: 'market',
+    warehouse: 'market',
+    police_station: 'university',
+    fire_station: 'university',
+    hospital: 'university',
+    school: 'university',
+    university: 'university',
+    park: 'park',
+    park_large: 'park',
+    tennis: 'park',
+    power_plant: 'university',
+    water_tower: 'university',
+    stadium: 'university',
+    museum: 'university',
+    airport: 'university',
+    space_program: 'university',
+    tree: 'park',
+    water: 'grass',
+    subway_station: 'university',
+    city_hall: 'university',
+    amusement_park: 'university',
+  },
+  individualSprites: {
+    house: '/assets/wild_west_town_Wild_West_Town/assets/house.png',
+    shop: '/assets/wild_west_town_Wild_West_Town/assets/shop.png',
+    market: '/assets/wild_west_town_Wild_West_Town/assets/market.png',
+    park: '/assets/wild_west_town_Wild_West_Town/assets/park.png',
+    university: '/assets/wild_west_town_Wild_West_Town/assets/university.png',
+    grass: '/assets/wild_west_town_Wild_West_Town/assets/grass.png',
+  },
+};
+
+// ============================================================================
+// SPRITE PACK: HISTORICAL AGES (keeping the old ones for compatibility)
+// ============================================================================
+// Historical themed sprite packs using your actual custom sprite sheets
+const SPRITE_PACK_MEDIEVAL: SpritePack = {
+  ...SPRITE_PACK_SPRITES4,
+  id: 'medieval',
+  name: 'Medieval Age',
+  src: '/assets/ages/medeival.png', // Your actual medieval sprite sheet
+  constructionSrc: '/assets/ages/medeival.png',
+};
+
+const SPRITE_PACK_CLASSICAL: SpritePack = {
+  ...SPRITE_PACK_SPRITES4,
+  id: 'classical',
+  name: 'Classical Age',
+  src: '/assets/ages/classics.png', // Your actual classical sprite sheet
+  constructionSrc: '/assets/ages/classics.png',
+};
+
+const SPRITE_PACK_ENLIGHTENMENT: SpritePack = {
+  ...SPRITE_PACK_SPRITES4,
+  id: 'enlightenment',
+  name: 'Enlightenment Age',
+  src: '/assets/ages/enlightenment.png', // Your actual enlightenment sprite sheet
+  constructionSrc: '/assets/ages/enlightenment.png',
+};
+
+const SPRITE_PACK_INDUSTRIAL: SpritePack = {
+  ...SPRITE_PACK_SPRITES4,
+  id: 'industrial',
+  name: 'Industrial Age',
+  src: '/assets/ages/industrial.png', // Your actual industrial sprite sheet
+  constructionSrc: '/assets/ages/industrial.png',
+};
+
+const SPRITE_PACK_MODERN_AGE: SpritePack = {
+  ...SPRITE_PACK_SPRITES4,
+  id: 'modern_age',
+  name: 'Modern Age',
+  src: '/assets/ages/modern.png', // Your actual modern sprite sheet
+  constructionSrc: '/assets/ages/modern.png',
+};
+
+// ============================================================================
 // SPRITE PACKS REGISTRY
 // ============================================================================
 // Add new sprite packs here. Each pack can have completely different
@@ -750,6 +1357,17 @@ export const SPRITE_PACKS: SpritePack[] = [
   SPRITE_PACK_SPRITES4,
   SPRITE_PACK_SPRITES4_HARRY,
   SPRITE_PACK_SPRITES4_CHINA,
+  // Your actual themed worlds
+  SPRITE_PACK_CANDY_LAND,
+  SPRITE_PACK_CYBERPUNK,
+  SPRITE_PACK_FANTASY,
+  SPRITE_PACK_JAPANESE,
+  SPRITE_PACK_MEDIEVAL_VILLAGE,
+  SPRITE_PACK_SPACE_COLONY,
+  SPRITE_PACK_STEAMPUNK,
+  SPRITE_PACK_TROPICAL,
+  SPRITE_PACK_UNDERWATER,
+  SPRITE_PACK_WILD_WEST,
 ];
 
 // Default sprite pack ID
@@ -824,6 +1442,17 @@ export function getSpriteCoords(
 ): { sx: number; sy: number; sw: number; sh: number } | null {
   const activePack = pack || _activeSpritePack;
   
+  // Check if this pack uses individual sprites
+  if (activePack.individualSprites) {
+    // For individual sprites, return full image dimensions
+    return {
+      sx: 0,
+      sy: 0,
+      sw: spriteSheetWidth,
+      sh: spriteSheetHeight,
+    };
+  }
+  
   // First, map building type to sprite key
   const spriteKey = activePack.buildingToSprite[buildingType];
   if (!spriteKey) return null;
@@ -883,6 +1512,24 @@ export function getSpriteCoords(
     sw: tileWidth,
     sh: sh,
   };
+}
+
+// Get individual sprite source for themes that use individual building images
+export function getIndividualSpriteSrc(
+  buildingType: string,
+  pack?: SpritePack
+): string | null {
+  const activePack = pack || _activeSpritePack;
+  
+  // Check if this pack uses individual sprites
+  if (!activePack.individualSprites) return null;
+  
+  // Map building type to sprite key
+  const spriteKey = activePack.buildingToSprite[buildingType];
+  if (!spriteKey) return null;
+  
+  // Return the individual sprite path
+  return activePack.individualSprites[spriteKey] || null;
 }
 
 // Helper to get offsets for a specific pack

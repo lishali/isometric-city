@@ -34,3 +34,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Custom assets (not committed to GitHub)
+/public/assets/custom/
+/public/assets/user-sprites/
+/public/assets/ages/
+/public/assets/buildings/
